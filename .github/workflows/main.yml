@@ -1,4 +1,4 @@
-name: Build SwayFX (Debian Trixie)
+name: cpgt Build SwayFX (Debian Trixie)
 
 on:
   push:
@@ -27,6 +27,7 @@ jobs:
             libxcb-render-util0-dev libxcb-ewmh-dev libxcb-icccm4-dev \
             libliftoff-dev libdisplay-info-dev liblcms2-dev libpixman-1-dev \
             libgles2-mesa-dev libegl-dev libgl-dev \
+            libudev-dev libsystemd-dev libxwayland-dev libvulkan-dev \
             ca-certificates
 
       - name: Clone sources
@@ -47,11 +48,14 @@ jobs:
           git clone https://gitlab.freedesktop.org/wlroots/wlroots.git
           cd wlroots && git checkout 0.19.0
 
-      - name: Configure (clean)
+      - name: Configure
         run: |
           cd /build/swayfx
           rm -rf build
-          meson setup build/ --wipe
+          meson setup build/ \
+            -Dxwayland=enabled \
+            -Dexamples=false \
+            -Dwerror=false
 
       - name: Build (verbose)
         run: |
@@ -79,7 +83,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
           name: swayfx-0.5.3
 
