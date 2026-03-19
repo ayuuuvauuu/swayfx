@@ -45,7 +45,7 @@ jobs:
           cd scenefx && git checkout 0.3
           mkdir -p subprojects
           git clone https://gitlab.freedesktop.org/wlroots/wlroots.git subprojects/wlroots
-          cd subprojects/wlroots && git checkout 0.19.0
+          cd subprojects/wlroots && git checkout 0.18.2
 
       - name: Build & Install scenefx (bundles wlroots internally)
         run: |
@@ -109,7 +109,7 @@ jobs:
             Automated build of **SwayFX 0.5.3** on Debian 13 (Trixie).
 
             **Built with:**
-            - scenefx 0.3 (statically linked, bundles wlroots 0.19.0)
+            - scenefx 0.3 (statically linked, bundles wlroots 0.18.2)
             - LTO + PIE enabled
             - Tray: disabled
             - Man pages: disabled
