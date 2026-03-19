@@ -61,7 +61,7 @@ jobs:
             --default-library=static \
             -Db_lto=true \
             -Db_pie=true \
-            --wrap-mode=forcefallback \
+            --wrap-mode=nofallback \
             -Dtray=disabled \
             -Dman-pages=disabled \
             -Dwlroots:xwayland=disabled \
