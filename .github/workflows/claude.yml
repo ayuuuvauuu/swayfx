@@ -1,4 +1,4 @@
-name: claude Build SwayFX 0.5.3 (Static)
+name: Build SwayFX 0.5.3 (Static)
 
 on:
   push:
@@ -62,8 +62,10 @@ jobs:
             -Db_lto=true \
             -Db_pie=true \
             --wrap-mode=forcefallback \
-            -Dxwayland=disabled \
-            -Dtray=disabled
+            -Dtray=disabled \
+            -Dman-pages=disabled \
+            -Dwlroots:xwayland=disabled \
+            -Dwlroots:backends=drm,libinput
 
       - name: Compile
         run: |
@@ -106,17 +108,17 @@ jobs:
             Automated **static** build of **SwayFX 0.5.3** on Debian 13 (Trixie).
 
             **Built with:**
-            - wlroots 0.19.0 (statically linked)
+            - wlroots 0.19.0 (statically linked, xwayland disabled)
             - scenefx 0.4.1 (statically linked)
-            - LTO enabled
-            - PIE enabled
-            - XWayland: disabled
+            - Backends: drm, libinput
+            - LTO + PIE enabled
             - Tray: disabled
+            - Man pages: disabled
 
             **Triggered by:** `${{ github.sha }}`
 
             > ⚠️ Note: `libwayland-client`, `libwayland-server`, and `libglesv2`
-            > cannot be fully statically linked on Wayland compositors due to
+            > cannot be fully statically linked in a Wayland compositor due to
             > protocol socket IPC requirements. These remain as runtime deps.
 
             Install by extracting the tarball to `/`:
