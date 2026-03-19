@@ -53,19 +53,18 @@ jobs:
           git clone https://gitlab.freedesktop.org/wlroots/wlroots.git
           cd wlroots && git checkout 0.19.0 && cd ..
 
-      - name: Configure Build (Meson — Static)
+      - name: Configure Build (Meson — Static subprojects)
         run: |
           cd swayfx
           meson setup build/ \
             --prefix=/usr/local \
-            --default-library=static \
+            --wrap-mode=nofallback \
             -Db_lto=true \
             -Db_pie=true \
-            --wrap-mode=nofallback \
             -Dtray=disabled \
             -Dman-pages=disabled \
-            -Dwlroots:xwayland=disabled \
-            -Dwlroots:backends=drm,libinput
+            -Dwlroots:default_library=static \
+            -Dscenefx:default_library=static
 
       - name: Compile
         run: |
@@ -105,21 +104,19 @@ jobs:
           tag_name: swayfx-0.5.3-${{ github.run_number }}
           name: SwayFX 0.5.3 — Static Build ${{ github.run_number }}
           body: |
-            Automated **static** build of **SwayFX 0.5.3** on Debian 13 (Trixie).
+            Automated build of **SwayFX 0.5.3** on Debian 13 (Trixie).
 
             **Built with:**
-            - wlroots 0.19.0 (statically linked, xwayland disabled)
+            - wlroots 0.19.0 (statically linked)
             - scenefx 0.4.1 (statically linked)
-            - Backends: drm, libinput
             - LTO + PIE enabled
             - Tray: disabled
             - Man pages: disabled
 
             **Triggered by:** `${{ github.sha }}`
 
-            > ⚠️ Note: `libwayland-client`, `libwayland-server`, and `libglesv2`
-            > cannot be fully statically linked in a Wayland compositor due to
-            > protocol socket IPC requirements. These remain as runtime deps.
+            > ⚠️ `libwayland-client`, `libwayland-server`, and `libglesv2` remain
+            > as runtime deps — they cannot be statically linked in a Wayland compositor.
 
             Install by extracting the tarball to `/`:
             ```bash
